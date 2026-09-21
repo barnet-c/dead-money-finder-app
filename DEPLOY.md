@@ -22,7 +22,7 @@ Do **not** use Azure Static Web Apps. This app has an always-on Express server a
 | Linux Plan | `ASP-N8N-b15e (B1)` — reuse the existing plan, no extra cost |
 | Zone redundancy | Disabled |
 
-**Deployment tab**
+**Deployment tab** (if your wizard shows it — otherwise do this after creation via **Deployment Center**, see below)
 
 | Field | Value |
 |---|---|
@@ -36,6 +36,8 @@ Do **not** use Azure Static Web Apps. This app has an always-on Express server a
 Leave every other tab at its defaults and click **Review + create → Create**.
 
 Azure will commit a workflow file into `.github/workflows/` in the repo and add the three `AZUREAPPSERVICE_*` secrets. The first deploy starts within a minute or two. Watch it under the repo's **Actions** tab.
+
+**Connecting GitHub after the app already exists:** App Service → **Deployment → Deployment Center** → Source **GitHub** → authorise → Organization `barnet-c`, Repository `dead-money-finder-app`, Branch `main` → **Save**. Same result.
 
 ---
 
@@ -51,7 +53,9 @@ Add each row, then **Apply**. The app restarts.
 | `API_URL` | `https://<your-app-hostname>` | Yes |
 | `DATABASE_PATH` | `/home/data/repeatflow.db` | Yes — `/home` survives redeploys |
 | `SCM_DO_BUILD_DURING_DEPLOYMENT` | `false` | Yes — GitHub Actions already builds |
-| `ANTHROPIC_API_KEY` | your Claude key | For AI drafting and inbox scanning |
+| `OPENAI_API_KEY` | your OpenAI key | For AI drafting and inbox scanning (or use Anthropic below) |
+| `OPENAI_MODEL` | `gpt-4o-mini` | Optional |
+| `ANTHROPIC_API_KEY` | your Claude key | Alternative AI provider |
 | `ANTHROPIC_MODEL` | `claude-sonnet-5` | Optional |
 | `GOOGLE_CLIENT_ID` | from Google Cloud Console | For the Gmail connector |
 | `GOOGLE_CLIENT_SECRET` | from Google Cloud Console | For the Gmail connector |

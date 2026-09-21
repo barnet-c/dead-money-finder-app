@@ -13,6 +13,7 @@ import {
 } from './auth.js';
 import { FUNCTIONS } from './functions/index.js';
 import { buildAuthUrl, handleCallback, disconnect, isGmailConfigured } from './gmail.js';
+import { isLlmConfigured } from './llm.js';
 import { startScheduler } from './cron.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -32,7 +33,7 @@ const wrap = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).cat
 app.get('/api/health', (_req, res) => res.json({
   ok: true,
   gmail_configured: isGmailConfigured(),
-  llm_configured: !!process.env.ANTHROPIC_API_KEY,
+  llm_configured: isLlmConfigured(),
 }));
 
 // ---- auth -----------------------------------------------------------------
@@ -148,7 +149,7 @@ app.use((err, _req, res, _next) => {
 
 app.listen(PORT, () => {
   console.log(`Repeat Flow API listening on http://localhost:${PORT}`);
-  if (!process.env.ANTHROPIC_API_KEY) console.warn('  ! ANTHROPIC_API_KEY missing — AI drafting disabled');
+  if (!isLlmConfigured()) console.warn('  ! No ANTHROPIC_API_KEY or OPENAI_API_KEY — AI drafting disabled');
   if (!isGmailConfigured()) console.warn('  ! GOOGLE_CLIENT_ID/SECRET missing — Gmail connector disabled');
   startScheduler();
 });
