@@ -20,6 +20,7 @@ const PORT = Number(process.env.PORT || 3001);
 const APP_URL = process.env.APP_URL || 'http://localhost:5173';
 
 const app = express();
+app.set('trust proxy', 1); // Azure App Service terminates TLS in front of us
 app.use(cors({ origin: APP_URL, credentials: true }));
 app.use(express.json({ limit: '2mb' }));
 app.use(cookieParser());

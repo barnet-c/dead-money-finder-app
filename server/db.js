@@ -2,7 +2,10 @@ import { DatabaseSync } from 'node:sqlite';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const dbPath = process.env.DATABASE_PATH || './data/repeatflow.db';
+// On Azure App Service the only disk that survives a redeploy is /home, so the
+// database defaults there when we detect that environment.
+const onAzure = !!process.env.WEBSITE_SITE_NAME;
+const dbPath = process.env.DATABASE_PATH || (onAzure ? '/home/data/repeatflow.db' : './data/repeatflow.db');
 fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 
 export const db = new DatabaseSync(dbPath);
