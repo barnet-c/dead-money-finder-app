@@ -103,6 +103,7 @@ Keep the localhost one too if you still develop locally.
 
 ## Troubleshooting
 
+- **503 right after a green deploy** → Azure's auto-generated workflow may lack an install/build step, so only source code is uploaded. The workflow in this repo has an `npm ci && npm run build` step before the upload; make sure it is still there if Azure regenerates the file.
 - **"Application Error" page** → Log stream. Most often a missing `JWT_SECRET` or the startup command not set.
 - **`ERR_UNKNOWN_BUILTIN_MODULE node:sqlite`** → the runtime is older than Node 22.13. Set runtime stack to Node 22 LTS (or newer).
 - **Login works locally but not on Azure** → `APP_URL` must exactly match the site's https origin.

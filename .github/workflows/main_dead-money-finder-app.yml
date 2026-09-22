@@ -23,6 +23,11 @@ jobs:
         with:
           node-version: '22.x'
 
+      - name: npm install and build
+        run: |
+          npm ci
+          npm run build
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
